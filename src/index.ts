@@ -17,6 +17,7 @@ import Menu from './components/atoms/Menu';
 import Modal from './components/atoms/Modal';
 import Preloader from './components/atoms/Preloader';
 import Radio from './components/atoms/Radio';
+import RatePicker from './components/atoms/RatePicker';
 import Search from './components/atoms/Search';
 import Segment from './components/atoms/Segment';
 import Select from './components/atoms/Select';
@@ -62,6 +63,7 @@ export {
   Modal,
   Preloader,
   Radio,
+  RatePicker,
   Search,
   Segment,
   Select,
