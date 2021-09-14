@@ -2,9 +2,6 @@ import * as React from 'react'
 import { render } from '@testing-library/react'
 import RatePicker from './RatePicker'
 
-
-
-
 describe('Test <RatePicker/> component', () => {
   it('should be render RatePicker component', () => {
     render(<RatePicker />)
