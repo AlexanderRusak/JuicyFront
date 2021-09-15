@@ -21,5 +21,4 @@ describe('Test <RatePicker/> component', () => {
     const { container } = render(<RatePicker defaultPickedValue={7} />);
     expect(container.getElementsByClassName('rf-rate-picked')).toHaveLength(7);
   })
-
 })
