@@ -4,7 +4,10 @@ import { IRequestAttachment } from '../../../types/projects.types';
 import Menu from '../../atoms/Menu';
 import { Button } from '../../../index';
 import { IListElement } from '../../../types';
-import { createSignature, getUserCertificates } from 'crypto-pro';
+import {
+  Certificate, createSignature, getUserCertificates
+} from 'crypto-pro';
+import { IButtonProps } from '../../atoms/Button/Button';
 
 export interface IProps {
   /** входящий файл на подпись*/
@@ -15,6 +18,10 @@ export interface IProps {
   onError:(e:any)=> void;
   /** название кнопки*/
   buttonTitle?:string
+  /** фильтр сертификатов */
+  filter?: (cert: Certificate) => Promise<boolean>;
+  /** пропсы для кнопки */
+  btnProps?: IButtonProps;
 }
 interface IBrowserCert{
   /** имя пользователя*/
@@ -36,15 +43,23 @@ export interface ICertResult {
 const CertReader: React.FC<IProps> = ({ file,
   onSuccess,
   onError,
-  buttonTitle = 'Подписать ЕЦП (цифровая подпись)' }: IProps) => {
+  buttonTitle = 'Подписать ЭЦП (цифровая подпись)',
+  btnProps = {},
+  filter = async (cert: Certificate) => new Promise<boolean>(() => true) }: IProps) => {
   /** все доступные сертификаты*/
-  const [ certs, setCerts ] = useState<null|IBrowserCert[]>(null);
+  const [ certs, setCerts ] = useState<null|Certificate[]>(null);
   // ===================================================================================================================
   /** асинхронное получение серификатов с ключа*/
   useEffect(() => {
     async function getCertificates() {
       try {
-        setCerts(await getUserCertificates());
+        let certs = await getUserCertificates();
+        const filteredAsync = await Promise.all(certs.map(filter));
+        certs = certs.filter((_cert, i) => filteredAsync[i]);
+
+        if (certs.length) {
+          setCerts(certs);
+        }
       } catch (e) {
         setCerts(null);
         onError(e);
@@ -54,8 +69,8 @@ const CertReader: React.FC<IProps> = ({ file,
   }, []);
   // ===================================================================================================================
   /** формирование меню*/
-  const menuBuilder = (certs:IBrowserCert[]):IListElement[] => {
-    return certs.map((item:IBrowserCert) => {
+  const menuBuilder = (certs:Certificate[]):IListElement[] => {
+    return certs.map((item:Certificate) => {
       return {
         label: item.name + ` ( ${item.issuerName})`,
         value: item.thumbprint,
@@ -81,7 +96,7 @@ const CertReader: React.FC<IProps> = ({ file,
   // ===================================================================================================================
   return <>
     <Menu position='left' list={certs ? menuBuilder(certs) : undefined} >
-      <Button disabled={!certs}>{buttonTitle}</Button>
+      <Button {...btnProps} disabled={!certs}>{buttonTitle}</Button>
     </Menu>
   </>;
 };

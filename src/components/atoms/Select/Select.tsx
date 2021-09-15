@@ -230,14 +230,14 @@ const Select: FC<ISelectProps> = ({
           right += o.label[i];
         }
 
-        label = <>{left}<span className='rf-select__list-element--query'>{query}</span>{right}</>;
+        label = <>{left}<span title={query} className='rf-select__list-element--query'>{query}</span>{right}</>;
       }
     }
 
     return (
       <div className={`rf-select__list-element ${disabledClass} ${activeClass}`} key={ o.value }>
-        { multiselect ? <Checkbox label={label} checked={active} onChange={handleChange} fullWidth/> :
-          <div className='rf-select__list-element-single' onClick={ handleChange }>{label}</div>}
+        { multiselect ? <Checkbox titleAtt={o.label} label={label} checked={active} onChange={handleChange} fullWidth/> :
+          <div title={o.label} className='rf-select__list-element-single' onClick={ handleChange }>{label}</div>}
       </div>
     );
   });

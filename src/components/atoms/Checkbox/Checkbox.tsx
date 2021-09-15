@@ -20,6 +20,8 @@ export interface ICheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   round?: boolean;
   /** 100% ширины */
   fullWidth?: boolean;
+  /** Лейбл - текст */
+  titleAtt?: string;
 }
 
 const Checkbox: FC<ICheckboxProps> = ({
@@ -31,6 +33,7 @@ const Checkbox: FC<ICheckboxProps> = ({
   position = 'left',
   round = false,
   fullWidth = false,
+  titleAtt = '',
   ...props
 }: ICheckboxProps) => {
 
@@ -69,7 +72,7 @@ const Checkbox: FC<ICheckboxProps> = ({
       {checkIcon}
       {halfCheckIcon}
 
-      {label && <div className={`rf-checkbox__label ${showIconClass}`}>{label}</div>}
+      {label && <div title={titleAtt} className={`rf-checkbox__label ${showIconClass}`}>{label}</div>}
     </label>
   );
 };

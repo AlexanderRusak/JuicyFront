@@ -77,6 +77,7 @@
   box-shadow: 0 2px 6px rgba(25, 59, 104, 0.15);
   border-radius: 12px;
   overflow-y: auto;
+  overflow-x: hidden;
   cursor: pointer;
 }
 
@@ -98,6 +99,8 @@
 .rf-select__list-element-single {
   width: 100%;
   padding: 8px 16px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .rf-select__list-element .rf-checkbox {
@@ -120,6 +123,8 @@
 }
 
 .rf-select__list-element--query {
+  display: inline-block;
+  width: 100%;
   color: var(--basic-primary);
 }
 
